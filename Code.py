@@ -10,4 +10,11 @@ import csv
 import os
 
 
-print("Test")
+#Create the first window
+root = tk.Tk()
+root.title("Example Window")
+root.geometry("800x600")
+root.geometry("+500+200")
+
+#Runs the window
+root.mainloop()
