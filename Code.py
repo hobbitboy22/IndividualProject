@@ -9,6 +9,7 @@ from enum import Enum
 import csv
 import os
 
+csvFile = ""
 
 #Create the first window
 root = tk.Tk()
@@ -28,6 +29,19 @@ QuitButton.place(x = 325, y = 375)
 
 def DestroyWidget(widget):
     widget.destroy()
+
+def GetCSVFile():
+    NewCSV = filedialog.askdirectory()
+    if (CheckIfCSV(NewCSV)):
+        csvFile = NewCSV
+    else:
+        print("Incorrect filetype entered")
+
+def CheckIfCSV(File):
+    if ():
+        return True
+    else:
+        return False
 
 #Runs the window
 root.mainloop()
