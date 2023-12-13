@@ -74,3 +74,6 @@ root.mainloop()
 #Show user custom data stats
 #Use user stats to recommend new shows
 #Add shows into custom csv from API
+
+
+#Plex or Jellyfin
