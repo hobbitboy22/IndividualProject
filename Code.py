@@ -9,7 +9,7 @@ from enum import Enum
 import csv
 import os
 
-csvFile = ""
+Data = pd.read_csv("Data.csv")
 
 #Create the first window
 root = tk.Tk()
@@ -27,21 +27,30 @@ QuitButton = tk.Button(root, text = "Quit", font = ("Ariel", 30), fg = "red", co
 QuitButton.pack()
 QuitButton.place(x = 325, y = 375)
 
+
+FileButton = tk.Button(root, text = "Test", font = ("Ariel", 30), fg = "black", command = lambda: GetCSVFile())
+FileButton.pack()
+FileButton.place(x = 325, y = 450)
+
+
 def DestroyWidget(widget):
     widget.destroy()
 
 def GetCSVFile():
-    NewCSV = filedialog.askdirectory()
-    if (CheckIfCSV(NewCSV)):
-        csvFile = NewCSV
+    
+    try:
+        NewCSV = filedialog.askopenfilename(initialdir = "/", title = "Choose a file", filetypes = [("csv files", ".csv")])
+    except:
+        print("No file was entered")
     else:
-        print("Incorrect filetype entered")
-
-def CheckIfCSV(File):
-    if ():
-        return True
-    else:
-        return False
+        if (NewCSV != ""):
+            csvFile = NewCSV
+            print(csvFile)
+            Data = pd.read_csv(NewCSV)
+            print(Data.info())
+            print(Data.head())
+        else:
+            print("No file was selected")
 
 #Runs the window
 root.mainloop()
