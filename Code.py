@@ -9,7 +9,7 @@ from enum import Enum
 import csv
 import os
 
-Data = pd.read_csv("IndividualProject/Data.csv")
+Data = pd.read_csv("Data.csv")
 
 #Create the first window
 root = tk.Tk()
