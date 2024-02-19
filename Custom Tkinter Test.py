@@ -17,19 +17,20 @@ root = CTk()
 root.title("Example Window")
 root.geometry("800x600")
 root.geometry("+500+200")
+set_appearance_mode('dark')
 
 # Created text and places it on the screen
-Text = CTkLabel(root, text = "This text should appear on the screen", font = "Ariel", fg = "black")
+Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ("Ariel", 30))
 Text.pack()
 Text.place(x= 50, y = 50)
 
 # Quit Button
-QuitButton = CTkButton(root, text = "Quit", font = ("Ariel", 30), fg = "red", command = lambda: DestroyWidget(root))
+QuitButton = CTkButton(master = root, text = "Quit", font = ("Ariel", 30), corner_radius = 32, command = lambda: DestroyWidget(root))
 QuitButton.pack()
 QuitButton.place(x = 325, y = 350)
 
 # Get a new SCV Files Button
-FileButton = CTkButton(root, text = "File", font = ("Ariel", 30), fg = "black", command = lambda: GetCSVFile())
+FileButton = CTkButton(master = root, text = "File", font = ("Ariel", 30), corner_radius = 90, command = lambda: GetCSVFile())
 FileButton.pack()
 FileButton.place(x = 325, y = 450)
 
