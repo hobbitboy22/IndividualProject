@@ -9,7 +9,31 @@ from enum import Enum
 import csv
 import os
 from customtkinter import *
+
+# Import custom functions
 from Compare_Headers_Test import compare_csv_formats
+
+# Additional Window class
+class AdditionalPopup(CTkToplevel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title("Additional Popup")
+
+        # Get the top left corners x and y coordinates if the root window (master)
+        position_x = master.winfo_rootx()
+        position_y = master.winfo_rooty()
+        
+        # Set the size of the window
+        # .format(position_x, position_y) sets the position at the root windows top left corner so that they overlap
+        self.wm_geometry("600x400+{}+{}".format(position_x, position_y))
+
+        # Add widgets to the pop-up window
+        label = CTkLabel(self, text="This is an additional pop-up window.")
+        label.pack()
+        
+        # Moves the window to the top
+        self.attributes('-topmost', True)
+
 
 Data = pd.read_csv("Data.csv")
 
@@ -19,6 +43,13 @@ root.title("Example Window")
 root.geometry("800x600")
 root.geometry("+500+200")
 set_appearance_mode('dark')
+
+# Function to open an additional window
+def open_additional_window():
+    popup = AdditionalPopup(root)
+    
+open_popup_button = CTkButton(root, text = 'Open Popup', command = open_additional_window)
+open_popup_button.pack()
 
 # Created text and places it on the screen
 Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ("Ariel", 30))
