@@ -9,6 +9,7 @@ from enum import Enum
 import csv
 import os
 from customtkinter import *
+from Compare_Headers_Test import compare_csv_formats
 
 Data = pd.read_csv("Data.csv")
 
@@ -38,21 +39,23 @@ FileButton.place(x = 325, y = 450)
 def DestroyWidget(widget):
     widget.destroy()
 
+# Function to get user to choose a valid csv file
 def GetCSVFile():
+    global Data
     
     try:
         NewCSV = filedialog.askopenfilename(initialdir = "/", title = "Choose a file", filetypes = [("csv files", ".csv")])
     except:
         print("No file was entered")
     else:
-        if (NewCSV != ""):
-            csvFile = NewCSV
-            print(csvFile)
-            Data = pd.read_csv(NewCSV)
-            print(Data.info())
-            print(Data.head())
+        if(compare_csv_formats(Data, NewCSV)):
+            if (NewCSV != ""):
+                Data = pd.read_csv(NewCSV)
+                print('File has been successfully picked')
+            else:
+                print("No file was selected")
         else:
-            print("No file was selected")
+            print('Csv has an Invalid format')
 
 # Runs the window
 root.mainloop()
