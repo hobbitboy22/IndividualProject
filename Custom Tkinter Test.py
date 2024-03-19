@@ -35,7 +35,7 @@ FileButton = CTkButton(master = root, text = "File", font = ("Ariel", 30), corne
 FileButton.pack()
 FileButton.place(x = 325, y = 450)
 
-
+# Function to destroy a given widget
 def DestroyWidget(widget):
     widget.destroy()
 
@@ -43,13 +43,17 @@ def DestroyWidget(widget):
 def GetCSVFile():
     global Data
     
+    # Get file input of a certain type from user
     try:
         NewCSV = filedialog.askopenfilename(initialdir = "/", title = "Choose a file", filetypes = [("csv files", ".csv")])
     except:
         print("No file was entered")
     else:
+        # Check if the new csv file has the correct format
         if(compare_csv_formats(Data, NewCSV)):
+            # Check if new csv file is not empty
             if (NewCSV != ""):
+                # Set data as the new csv file
                 Data = pd.read_csv(NewCSV)
                 print('File has been successfully picked')
             else:
