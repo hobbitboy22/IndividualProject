@@ -34,6 +34,21 @@ class AdditionalPopup(CTkToplevel):
         # Moves the window to the top
         self.attributes('-topmost', True)
 
+# Add Information Window
+class InsertInformation(CTkToplevel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title('Intert Information')
+        
+        position_x = master.winfo_rootx()
+        position_y = master.winfo_rooty()
+        
+        self.wm_geometry('600x400+{}+{}'.format(position_x, position_y))
+        
+        test = CTkLabel(self, text = "TEST TO MAKE SURE THAT THE POPUP IS VISABLE")
+        test.pack()
+        
+        self.attributes('-topmost', True)
 
 Data = pd.read_csv("Data.csv")
 
@@ -43,18 +58,29 @@ root.title("Example Window")
 root.geometry("800x600")
 root.geometry("+500+200")
 set_appearance_mode('dark')
-
-# Function to open an additional window
-def open_additional_window():
-    popup = AdditionalPopup(root)
+    
+# Function to open a new popup depending on the given name
+def open_window(name):
+    # Return the class based on the given string
+    object = globals()[name]
+    # Call the class
+    object(root)
     
 open_popup_button = CTkButton(root, text = 'Open Popup', command = open_additional_window)
 open_popup_button.pack()
 
+open_popup_button2 = CTkButton(root, text = 'Open Popup', command = lambda: open_window('InsertInformation'))
+open_popup_button2.pack()
+open_popup_button2.place(y = open_popup_button.winfo_y() + 150)
+
+open_popup_button3 = CTkButton(root, text = 'Open Popup', command = lambda: open_window('AdditionalPopup'))
+open_popup_button3.pack()
+open_popup_button3.place(y = open_popup_button.winfo_y() + 200)
+
 # Created text and places it on the screen
 Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ("Ariel", 30))
 Text.pack()
-Text.place(x= 50, y = 50)
+Text.place(x = 50, y = 50)
 
 # Quit Button
 QuitButton = CTkButton(master = root, text = "Quit", font = ("Ariel", 30), corner_radius = 32, command = lambda: DestroyWidget(root))
