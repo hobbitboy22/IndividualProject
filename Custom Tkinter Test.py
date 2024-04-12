@@ -11,7 +11,7 @@ import os
 from customtkinter import *
 
 # Import custom functions
-from Compare_Headers_Test import compare_csv_formats
+from Compare_Headers_Test import *
 
 # Additional Window class
 class AdditionalPopup(CTkToplevel):
@@ -48,15 +48,20 @@ class InsertInformation(CTkToplevel):
         test = CTkLabel(self, text = "TEST TO MAKE SURE THAT THE POPUP IS VISABLE")
         test.pack()
         
+        testbutton = CTkButton(self, text = 'Get Genres', command = lambda: get_unique_values(Data2, 'Genre'))
+        testbutton.pack()
+        testbutton.place(x = 100, y = 100)
+        
         self.attributes('-topmost', True)
 
-Data = pd.read_csv("Data.csv")
+Data = pd.read_csv('Data.csv')
+Data2 = pd.read_csv('BaseData.csv')
 
 # Create the first window
 root = CTk()
-root.title("Example Window")
-root.geometry("800x600")
-root.geometry("+500+200")
+root.title('Example Window')
+root.geometry('800x600')
+root.geometry('+500+200')
 set_appearance_mode('dark')
     
 # Function to open a new popup depending on the given name
@@ -65,17 +70,17 @@ def open_window(name):
     object = globals()[name]
     # Call the class
     object(root)
-    
-open_popup_button = CTkButton(root, text = 'Open Popup', command = open_additional_window)
+
+open_popup_button = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('AdditionalPopup'))
 open_popup_button.pack()
 
-open_popup_button2 = CTkButton(root, text = 'Open Popup', command = lambda: open_window('InsertInformation'))
+open_popup_button2 = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('InsertInformation'))
 open_popup_button2.pack()
-open_popup_button2.place(y = open_popup_button.winfo_y() + 150)
+open_popup_button2.place(x = 325, y = open_popup_button.winfo_y() + 150)
 
-open_popup_button3 = CTkButton(root, text = 'Open Popup', command = lambda: open_window('AdditionalPopup'))
+open_popup_button3 = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('AdditionalPopup'))
 open_popup_button3.pack()
-open_popup_button3.place(y = open_popup_button.winfo_y() + 200)
+open_popup_button3.place(x = 325, y = open_popup_button.winfo_y() + 200)
 
 # Created text and places it on the screen
 Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ("Ariel", 30))
@@ -116,7 +121,7 @@ def GetCSVFile():
             else:
                 print("No file was selected")
         else:
-            print('Csv has an Invalid format')
+            print('CSV file has an invalid format')
 
 # Runs the window
 root.mainloop()
