@@ -1,5 +1,5 @@
 import csv
-from Compare_Headers_Test import compare_csv_formats
+from CustomFunctions import compare_csv_formats
 
 data = 'Data.csv'
 alt = 'testdata.csv'

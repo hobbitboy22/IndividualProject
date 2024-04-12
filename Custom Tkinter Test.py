@@ -11,7 +11,7 @@ import os
 from customtkinter import *
 
 # Import custom functions
-from Compare_Headers_Test import *
+from CustomFunctions import *
 
 # Additional Window class
 class AdditionalPopup(CTkToplevel):
@@ -38,21 +38,74 @@ class AdditionalPopup(CTkToplevel):
 class InsertInformation(CTkToplevel):
     def __init__(self, master):
         super().__init__(master)
-        self.title('Intert Information')
+        self.title('Insert Information')
         
         position_x = master.winfo_rootx()
         position_y = master.winfo_rooty()
         
         self.wm_geometry('600x400+{}+{}'.format(position_x, position_y))
         
-        test = CTkLabel(self, text = "TEST TO MAKE SURE THAT THE POPUP IS VISABLE")
-        test.pack()
-        
-        testbutton = CTkButton(self, text = 'Get Genres', command = lambda: get_unique_values(Data2, 'Genre'))
+        testbutton = CTkButton(self, text = 'Test', command = lambda: GetValues())
         testbutton.pack()
-        testbutton.place(x = 100, y = 100)
+        testbutton.place(x = 250, y = 350)
         
+        #Text lables for data inputs
+        ShowNameText = CTkLabel(self, text = "Name:")
+        ShowNameText.place(x = 30, y = 30)
+        
+        ShowTypeText = CTkLabel(self, text = "Type:")
+        ShowTypeText.place(x = 30, y = 60)
+        
+        ShowGenreText = CTkLabel(self, text = "Genre:")
+        ShowGenreText.place(x = 30, y = 90)
+        
+        ShowPlatformText = CTkLabel(self, text = "Platform:")
+        ShowPlatformText.place(x = 30, y = 120)
+        
+        ShowWatchedText = CTkLabel(self, text = "Watched Status:")
+        ShowWatchedText.place(x = 30, y = 150)
+        
+        #Input Windows
+        Default = 'Please Select an Option'
+        
+        ShowName = CTkEntry(self)
+        ShowName.pack()
+        ShowName.place(x = 150, y = 30)
+        
+        FilmSeries = ['Film', 'Series']
+        Type = CTkOptionMenu(self, values = FilmSeries)
+        Type.set(Default)
+        Type.pack()
+        Type.place(x = 150, y = 60)
+        
+        Genre = CTkOptionMenu(self, values = get_unique_values(Data2, 'Genre'))
+        Genre.set(Default)
+        Genre.pack()
+        Genre.place(x = 150, y = 90)
+        
+        Platform = CTkOptionMenu(self, values = get_unique_values(Data2, 'Platform'))
+        Platform.set(Default)
+        Platform.pack()
+        Platform.place(x = 150, y = 120)
+        
+        WatchedOptions = ['Yes', 'No', 'Partly']
+        WatchedStatus = CTkOptionMenu(self, values = WatchedOptions)
+        WatchedStatus.set(Default)
+        WatchedStatus.pack()
+        WatchedStatus.place(x = 150, y = 150)
+        
+        # Moves the window to the top level
         self.attributes('-topmost', True)
+        
+        def GetValues():
+            data = [ShowName.get(), Type.get(), Genre.get(), Platform.get(), WatchedStatus.get()]
+            valid = True
+            for value in data:
+                if value == Default:
+                    print('You have not selected a valid value')
+                    valid = False
+            if valid:
+                add_data(Data2, data)
 
 Data = pd.read_csv('Data.csv')
 Data2 = pd.read_csv('BaseData.csv')
@@ -74,7 +127,7 @@ def open_window(name):
 open_popup_button = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('AdditionalPopup'))
 open_popup_button.pack()
 
-open_popup_button2 = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('InsertInformation'))
+open_popup_button2 = CTkButton(root, text = 'Open Popup2', corner_radius = 32, command = lambda: open_window('InsertInformation'))
 open_popup_button2.pack()
 open_popup_button2.place(x = 325, y = open_popup_button.winfo_y() + 150)
 
@@ -122,6 +175,9 @@ def GetCSVFile():
                 print("No file was selected")
         else:
             print('CSV file has an invalid format')
+
+def GetDataValues():
+    return True
 
 # Runs the window
 root.mainloop()
