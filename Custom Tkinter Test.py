@@ -45,11 +45,23 @@ class InsertInformation(CTkToplevel):
         
         self.wm_geometry('600x400+{}+{}'.format(position_x, position_y))
         
-        testbutton = CTkButton(self, text = 'Test', command = lambda: GetValues())
-        testbutton.pack()
-        testbutton.place(x = 250, y = 350)
+        IncorrectInputText = 'Invalid data has been entered. Please make sure \nall options have been filled in'
         
-        #Text lables for data inputs
+        IncorrectInput = CTkLabel(self, text = '', font = ('Ariel', 18), text_color = 'red')
+        IncorrectInput.pack()
+        IncorrectInput.place(x = 135, y = 250)  
+              
+        testbutton = CTkButton(self, text = 'Add Data', font = ('Ariel', 30), command = lambda: AddData())
+        testbutton.pack()
+        testbutton.place(x = 250, y = 300)
+        
+        CloseButton = CTkButton(self, text = 'Close', font = ('Ariel', 30), text_color = 'red', command = lambda: DestroyWidget(self))
+        CloseButton.pack()
+        CloseButton.place(x = 250, y = 350)
+        
+
+        
+        # Text lables for data inputs
         ShowNameText = CTkLabel(self, text = "Name:")
         ShowNameText.place(x = 30, y = 30)
         
@@ -65,7 +77,7 @@ class InsertInformation(CTkToplevel):
         ShowWatchedText = CTkLabel(self, text = "Watched Status:")
         ShowWatchedText.place(x = 30, y = 150)
         
-        #Input Windows
+        # Input Windows
         Default = 'Please Select an Option'
         
         ShowName = CTkEntry(self)
@@ -97,16 +109,27 @@ class InsertInformation(CTkToplevel):
         # Moves the window to the top level
         self.attributes('-topmost', True)
         
-        def GetValues():
+        # Function to get the input values and add them to the csv file
+        def AddData():
             data = [ShowName.get(), Type.get(), Genre.get(), Platform.get(), WatchedStatus.get()]
+            
+            # Check if the inputted data is valid
             valid = True
             for value in data:
                 if value == Default:
-                    print('You have not selected a valid value')
+                    valid = False
+                if value == '':
                     valid = False
             if valid:
+                # Add the data to the csv file
                 add_data(Data2, data)
+                
+                # Destroy the popup
+                DestroyWidget(self)
+            else:
+                IncorrectInput.configure(text = IncorrectInputText)
 
+# Setting Initial Datasets
 Data = pd.read_csv('Data.csv')
 Data2 = pd.read_csv('BaseData.csv')
 
@@ -124,29 +147,23 @@ def open_window(name):
     # Call the class
     object(root)
 
-open_popup_button = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('AdditionalPopup'))
-open_popup_button.pack()
-
-open_popup_button2 = CTkButton(root, text = 'Open Popup2', corner_radius = 32, command = lambda: open_window('InsertInformation'))
-open_popup_button2.pack()
-open_popup_button2.place(x = 325, y = open_popup_button.winfo_y() + 150)
-
-open_popup_button3 = CTkButton(root, text = 'Open Popup', corner_radius = 32, command = lambda: open_window('AdditionalPopup'))
-open_popup_button3.pack()
-open_popup_button3.place(x = 325, y = open_popup_button.winfo_y() + 200)
+# Button to add data
+AddDataButton = CTkButton(root, text = 'Add Data', font = ('Ariel', 30), corner_radius = 32, command = lambda: open_window('InsertInformation'))
+AddDataButton.pack()
+AddDataButton.place(x = 325, y = 150)
 
 # Created text and places it on the screen
-Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ("Ariel", 30))
+Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ('Ariel', 30))
 Text.pack()
 Text.place(x = 50, y = 50)
 
 # Quit Button
-QuitButton = CTkButton(master = root, text = "Quit", font = ("Ariel", 30), corner_radius = 32, command = lambda: DestroyWidget(root))
+QuitButton = CTkButton(master = root, text = "Quit", font = ('Ariel', 30), text_color = 'red', corner_radius = 32, command = lambda: DestroyWidget(root))
 QuitButton.pack()
 QuitButton.place(x = 325, y = 350)
 
 # Get a new SCV Files Button
-FileButton = CTkButton(master = root, text = "File", font = ("Ariel", 30), corner_radius = 90, command = lambda: GetCSVFile())
+FileButton = CTkButton(master = root, text = "File", font = ('Ariel', 30), corner_radius = 90, command = lambda: GetCSVFile())
 FileButton.pack()
 FileButton.place(x = 325, y = 450)
 
