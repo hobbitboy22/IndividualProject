@@ -193,31 +193,19 @@ def GetCSVFile():
         else:
             print('CSV file has an invalid format')
 
-def GetDataValues():
-    return True
-
 # Runs the window
 root.mainloop()
 
 
 # To-Do
 
-# Find database API
-# Connect to database API
 # Import custom data into user's csv
 # View data in user's custom csv
-# View data from the API
-# Use data from both the custom csv file and API
-# Update API data information function
 # Select random show or movie
 # Select show or movie from given stats
 # Show watch history
-# Recommend shows from custom csv from previously watched shows and genres
-# Recommend shows from API from previously watched shows and genres
 # Show user watch history stats
 # Show user custom data stats
-# Use user stats to recommend new shows
-# Add shows into custom csv from API
 
 
 # Plex or Jellyfin
