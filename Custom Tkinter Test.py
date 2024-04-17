@@ -28,10 +28,89 @@ class AdditionalPopup(CTkToplevel):
         self.wm_geometry("600x400+{}+{}".format(position_x, position_y))
 
         # Add widgets to the pop-up window
-        label = CTkLabel(self, text="This is an additional pop-up window.")
+        label = CTkLabel(self, text = "This is an additional pop-up window.")
         label.pack()
         
         # Moves the window to the top
+        self.attributes('-topmost', True)
+
+# Choose a random film or series window
+class ChooseShow(CTkToplevel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title('Show Selection')
+
+        position_x = master.winfo_rootx()
+        position_y = master.winfo_rooty()
+        
+        self.wm_geometry("600x400+{}+{}".format(position_x, position_y))
+
+        thing = CTkSwitch(self, text = 'Use variable', width = 20, height = 20)
+        thing.pack()
+        thing.place(x = 300, y = 300)
+
+        # Title Lablel
+        label = CTkLabel(self, text = "Choose a random show", font = ('Ariel', 30))
+        label.pack()
+        label.place(x = 150, y = 20)
+        
+        # Text lables for data inputs
+        
+        ShowTypeText = CTkLabel(self, text = "Type:", font = ('Ariel', 20, 'bold'))
+        ShowTypeText.place(x = 30, y = 70)
+        
+        ShowGenreText = CTkLabel(self, text = "Genre:", font = ('Ariel', 20, 'bold'))
+        ShowGenreText.place(x = 30, y = 110)
+        
+        ShowPlatformText = CTkLabel(self, text = "Platform:", font = ('Ariel', 20, 'bold'))
+        ShowPlatformText.place(x = 30, y = 150)
+        
+        ShowWatchedText = CTkLabel(self, text = "Watched Status:", font = ('Ariel', 14, 'bold'))
+        ShowWatchedText.place(x = 30, y = 190)
+
+        # Input Windows
+        Default = 'Please Select an Option'
+        
+        FilmSeries = ['Film', 'Series']
+        Type = CTkOptionMenu(self, values = FilmSeries)
+        Type.set(Default)
+        Type.pack()
+        Type.place(x = 150, y = 70)
+        
+        Genre = CTkOptionMenu(self, values = get_unique_values(Data2, 'Genre'))
+        Genre.set(Default)
+        Genre.pack()
+        Genre.place(x = 150, y = 110)
+        
+        Platform = CTkOptionMenu(self, values = get_unique_values(Data2, 'Platform'))
+        Platform.set(Default)
+        Platform.pack()
+        Platform.place(x = 150, y = 150)
+        
+        WatchedOptions = ['Yes', 'No', 'Partly']
+        WatchedStatus = CTkOptionMenu(self, values = WatchedOptions)
+        WatchedStatus.set(Default)
+        WatchedStatus.pack()
+        WatchedStatus.place(x = 150, y = 190)
+
+        # Switches to Toggle Variables
+
+        FilmSeriesSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        FilmSeriesSwitch.pack()
+        FilmSeriesSwitch.place(x = 350, y = 65)
+
+        GenreSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        GenreSwitch.pack()
+        GenreSwitch.place(x = 350, y = 105)
+
+        PlatformSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        PlatformSwitch.pack()
+        PlatformSwitch.place(x = 350, y = 145)
+
+        WatchedStatusSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        WatchedStatusSwitch.pack()
+        WatchedStatusSwitch.place(x = 350, y = 185)
+
         self.attributes('-topmost', True)
 
 # Add Information Window
@@ -163,9 +242,21 @@ QuitButton.pack()
 QuitButton.place(x = 325, y = 350)
 
 # Get a new SCV Files Button
-FileButton = CTkButton(master = root, text = "File", font = ('Ariel', 30), corner_radius = 90, command = lambda: GetCSVFile())
+FileButton = CTkButton(master = root, text = "Change CSV File", font = ('Ariel', 30), corner_radius = 90, command = lambda: GetCSVFile())
 FileButton.pack()
-FileButton.place(x = 325, y = 450)
+FileButton.place(x = 270, y = 450)
+
+# Invalid file selected text
+InvalidFileTextValue = 'The selected file is not in the correct format.\nPlease reformat the file or choose another'
+InvalidFileText = CTkLabel(master = root, text = '', font = ('Ariel', 18), text_color = 'red')
+InvalidFileText.pack()
+InvalidFileText.place(x = 235, y = 500)
+
+
+testbutton = CTkButton(master = root, text = 'test', command = lambda: open_window('ChooseShow'))
+testbutton.pack()
+testbutton.place(x = 100, y = 100)
+
 
 # Function to destroy a given widget
 def DestroyWidget(widget):
@@ -187,11 +278,12 @@ def GetCSVFile():
             if (NewCSV != ""):
                 # Set data as the new csv file
                 Data = pd.read_csv(NewCSV)
-                print('File has been successfully picked')
+                InvalidFileText.config(text = '')
             else:
                 print("No file was selected")
         else:
             print('CSV file has an invalid format')
+            InvalidFileText.configure(text = InvalidFileTextValue)
 
 # Runs the window
 root.mainloop()
