@@ -287,17 +287,3 @@ def GetCSVFile():
 
 # Runs the window
 root.mainloop()
-
-
-# To-Do
-
-# Import custom data into user's csv
-# View data in user's custom csv
-# Select random show or movie
-# Select show or movie from given stats
-# Show watch history
-# Show user watch history stats
-# Show user custom data stats
-
-
-# Plex or Jellyfin
