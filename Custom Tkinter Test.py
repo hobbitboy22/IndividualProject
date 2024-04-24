@@ -130,13 +130,13 @@ class InsertInformation(CTkToplevel):
         IncorrectInput.pack()
         IncorrectInput.place(x = 135, y = 250)  
               
-        testbutton = CTkButton(self, text = 'Add Data', font = ('Ariel', 30), command = lambda: AddData())
+        testbutton = CTkButton(self, text = 'Add Data', font = ('Ariel', 30), width = 100, command = lambda: AddData())
         testbutton.pack()
-        testbutton.place(x = 250, y = 300)
+        testbutton.place(x = 100, y = 300)
         
-        CloseButton = CTkButton(self, text = 'Close', font = ('Ariel', 30), text_color = 'red', command = lambda: DestroyWidget(self))
+        CloseButton = CTkButton(self, text = 'Cancel', font = ('Ariel', 30), width = 100, text_color = 'red', command = lambda: DestroyWidget(self))
         CloseButton.pack()
-        CloseButton.place(x = 250, y = 350)
+        CloseButton.place(x = 400, y = 300)
         
 
         
