@@ -56,60 +56,60 @@ class ChooseShow(CTkToplevel):
         
         # Text lables for data inputs
         
-        ShowTypeText = CTkLabel(self, text = "Type:", font = ('Ariel', 20, 'bold'))
+        ShowTypeText = CTkLabel(self, text = "Type:", font = ('Ariel', 25, 'bold'))
         ShowTypeText.place(x = 30, y = 70)
         
-        ShowGenreText = CTkLabel(self, text = "Genre:", font = ('Ariel', 20, 'bold'))
-        ShowGenreText.place(x = 30, y = 110)
+        ShowGenreText = CTkLabel(self, text = "Genre:", font = ('Ariel', 25, 'bold'))
+        ShowGenreText.place(x = 30, y = 120)
         
-        ShowPlatformText = CTkLabel(self, text = "Platform:", font = ('Ariel', 20, 'bold'))
-        ShowPlatformText.place(x = 30, y = 150)
+        ShowPlatformText = CTkLabel(self, text = "Platform:", font = ('Ariel', 25, 'bold'))
+        ShowPlatformText.place(x = 30, y = 170)
         
-        ShowWatchedText = CTkLabel(self, text = "Watched Status:", font = ('Ariel', 14, 'bold'))
-        ShowWatchedText.place(x = 30, y = 190)
+        ShowWatchedText = CTkLabel(self, text = "Watched:", font = ('Ariel', 25, 'bold'))
+        ShowWatchedText.place(x = 30, y = 220)
 
         # Input Windows
         Default = 'Please Select an Option'
         
         FilmSeries = ['Film', 'Series']
-        Type = CTkOptionMenu(self, values = FilmSeries)
+        Type = CTkOptionMenu(self, values = FilmSeries, font = ('Ariel', 25))
         Type.set(Default)
         Type.pack()
         Type.place(x = 150, y = 70)
         
-        Genre = CTkOptionMenu(self, values = get_unique_values(Data2, 'Genre'))
+        Genre = CTkOptionMenu(self, values = get_unique_values(Data2, 'Genre'), font = ('Ariel', 25))
         Genre.set(Default)
         Genre.pack()
-        Genre.place(x = 150, y = 110)
+        Genre.place(x = 150, y = 120)
         
-        Platform = CTkOptionMenu(self, values = get_unique_values(Data2, 'Platform'))
+        Platform = CTkOptionMenu(self, values = get_unique_values(Data2, 'Platform'), font = ('Ariel', 25))
         Platform.set(Default)
         Platform.pack()
-        Platform.place(x = 150, y = 150)
+        Platform.place(x = 150, y = 170)
         
         WatchedOptions = ['Yes', 'No', 'Partly']
-        WatchedStatus = CTkOptionMenu(self, values = WatchedOptions)
+        WatchedStatus = CTkOptionMenu(self, values = WatchedOptions, font = ('Ariel', 25))
         WatchedStatus.set(Default)
         WatchedStatus.pack()
-        WatchedStatus.place(x = 150, y = 190)
+        WatchedStatus.place(x = 150, y = 220)
 
         # Switches to Toggle Variables
 
-        FilmSeriesSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        FilmSeriesSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 25, 'bold'), height = 40, width = 40)
         FilmSeriesSwitch.pack()
-        FilmSeriesSwitch.place(x = 350, y = 65)
+        FilmSeriesSwitch.place(x = 485, y = 60)
 
-        GenreSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        GenreSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 25, 'bold'), height = 40, width = 40)
         GenreSwitch.pack()
-        GenreSwitch.place(x = 350, y = 105)
+        GenreSwitch.place(x = 485, y = 110)
 
-        PlatformSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        PlatformSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 25, 'bold'), height = 40, width = 40)
         PlatformSwitch.pack()
-        PlatformSwitch.place(x = 350, y = 145)
+        PlatformSwitch.place(x = 485, y = 160)
 
-        WatchedStatusSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 20, 'bold'), height = 40, width = 40)
+        WatchedStatusSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 25, 'bold'), height = 40, width = 40)
         WatchedStatusSwitch.pack()
-        WatchedStatusSwitch.place(x = 350, y = 185)
+        WatchedStatusSwitch.place(x = 485, y = 210)
 
         self.attributes('-topmost', True)
 
@@ -138,25 +138,26 @@ class InsertInformation(CTkToplevel):
         CloseButton.pack()  
         CloseButton.place(x = 400, y = 300)
         
-
         
         # Text lables for data inputs
-        ShowNameText = CTkLabel(self, text = "Name:")
+        
+        ShowNameText = CTkLabel(self, text = "Name:", font = ('Ariel', 25))
         ShowNameText.place(x = 30, y = 30)
         
-        ShowTypeText = CTkLabel(self, text = "Type:")
+        ShowTypeText = CTkLabel(self, text = "Type:", font = ('Ariel', 25))
         ShowTypeText.place(x = 30, y = 60)
         
-        ShowGenreText = CTkLabel(self, text = "Genre:")
+        ShowGenreText = CTkLabel(self, text = "Genre:", font = ('Ariel', 25))
         ShowGenreText.place(x = 30, y = 90)
         
-        ShowPlatformText = CTkLabel(self, text = "Platform:")
+        ShowPlatformText = CTkLabel(self, text = "Platform:", font = ('Ariel', 25))
         ShowPlatformText.place(x = 30, y = 120)
         
         ShowWatchedText = CTkLabel(self, text = "Watched Status:")
         ShowWatchedText.place(x = 30, y = 150)
         
         # Input Windows
+        
         Default = 'Please Select an Option'
         
         ShowName = CTkEntry(self)

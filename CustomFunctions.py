@@ -1,6 +1,7 @@
 import pandas as pd
 import csv
 import os
+import random
 
 data = pd.read_csv('Data.csv')
 data2 = pd.read_csv('BaseData.csv')
@@ -30,3 +31,25 @@ def add_data(csvfile, NewData):
     with open(filepath, 'a', newline = '') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(NewData)
+        
+# Function to create a dataframe from a csv file with the given variables
+def create_dataframe(df, type = None, genre = None, platform = None, watched = None):
+    if type:
+        df = df[df['Type'] == type]
+    if genre:
+        df = df[df['Genre'] == genre]
+    if platform:
+        df = df[df['Platform'] == platform]
+    if watched:
+        df = df[df['Watched'] == watched]
+    
+    return df
+    
+def get_value(df):
+    random_index = random.choice(df.index.tolist())
+    return df.loc[random_index]
+
+sui = create_dataframe(data2, genre = 'Action', watched = 'Partly')
+thing = get_value(sui)
+print(thing)
+print(thing['Name'])

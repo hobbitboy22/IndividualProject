@@ -9,6 +9,8 @@ Show user watch history stats
 Show user custom data stats
 Show all partially watched shows and Films
 Allow users to edit the watch status
+Edit data
+Remove data
 
 
 Plex or Jellyfin
