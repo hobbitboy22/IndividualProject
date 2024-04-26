@@ -135,7 +135,7 @@ class InsertInformation(CTkToplevel):
         testbutton.place(x = 100, y = 300)
         
         CloseButton = CTkButton(self, text = 'Cancel', font = ('Ariel', 30), width = 100, text_color = 'red', command = lambda: DestroyWidget(self))
-        CloseButton.pack()
+        CloseButton.pack()  
         CloseButton.place(x = 400, y = 300)
         
 
@@ -214,7 +214,7 @@ Data2 = pd.read_csv('BaseData.csv')
 
 # Create the first window
 root = CTk()
-root.title('Example Window')
+root.title('Main Window')
 root.geometry('800x600')
 root.geometry('+500+200')
 set_appearance_mode('dark')
