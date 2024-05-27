@@ -43,11 +43,7 @@ class ChooseShow(CTkToplevel):
         position_x = master.winfo_rootx()
         position_y = master.winfo_rooty()
         
-        self.wm_geometry("600x400+{}+{}".format(position_x, position_y))
-
-        thing = CTkSwitch(self, text = 'Use variable', width = 20, height = 20)
-        thing.pack()
-        thing.place(x = 300, y = 300)
+        self.wm_geometry("600x500+{}+{}".format(position_x, position_y))
 
         # Title Lablel
         label = CTkLabel(self, text = "Choose a random show", font = ('Ariel', 30))
@@ -55,7 +51,6 @@ class ChooseShow(CTkToplevel):
         label.place(x = 150, y = 20)
         
         # Text lables for data inputs
-        
         ShowTypeText = CTkLabel(self, text = "Type:", font = ('Ariel', 25, 'bold'))
         ShowTypeText.place(x = 30, y = 70)
         
@@ -94,7 +89,6 @@ class ChooseShow(CTkToplevel):
         WatchedStatus.place(x = 150, y = 220)
 
         # Switches to Toggle Variables
-
         FilmSeriesSwitch = CTkSwitch(self, text = 'Use', font = ('Ariel', 25, 'bold'), height = 40, width = 40)
         FilmSeriesSwitch.pack()
         FilmSeriesSwitch.place(x = 485, y = 60)
@@ -111,6 +105,79 @@ class ChooseShow(CTkToplevel):
         WatchedStatusSwitch.pack()
         WatchedStatusSwitch.place(x = 485, y = 210)
 
+        # Function to get the switch and input values
+        def ChooseShow():
+            # Get the switch values
+            film_series = FilmSeriesSwitch.get()
+            genre = GenreSwitch.get()
+            platform = PlatformSwitch.get()
+            watched_status = WatchedStatusSwitch.get()
+
+            # Get the input values if the switch is True
+            if film_series:
+                film_series_value = Type.get()
+            else:
+                film_series_value = None
+
+            if genre:
+                genre_value = Genre.get()
+            else:
+                genre_value = None
+
+            if platform:
+                platform_value = Platform.get()
+            else:
+                platform_value = None
+
+            if watched_status:
+                watched_status_value = WatchedStatus.get()
+            else:
+                watched_status_value = None
+                
+            # Get the random show
+            result = choose_random_show(Data, Type = film_series_value, Genre = genre_value, Platform = platform_value, Watched = watched_status_value)
+            
+            # Check if the result is a single string
+            if isinstance(result, str):
+                clear_labels()
+            else:
+                # Display the result on the screen
+                update_result_labels(result, result_labels)
+        
+        # Create labels to display the result data
+        result_labels = []
+        
+        # Functiont to clear labels
+        def clear_labels():
+            for label in result_labels:
+                label.destroy()
+        
+        # Function to update the labels with the result data
+        def update_result_labels(result, result_labels):
+            
+            # Clear existing labels
+            clear_labels()
+                
+            # Get the column names and values from the result dataframe
+            columns = result.index
+            values = result.values
+            
+            # Create and place labels for each column and value
+            for i in range(len(columns)):
+                label_text = f"{columns[i]}: {values[i]}"
+                label = CTkLabel(self, text = label_text, font = ('Ariel', 18))
+                label.pack()
+                label.place(x = 250, y = 350 + i * 30)
+                
+                # Add the label to the result_labels list
+                result_labels.append(label)
+        
+        
+        # Button to choose a random show
+        ChooseButton = CTkButton(self, text = 'Choose Show', font = ('Ariel', 30), width = 100, command = lambda: ChooseShow())
+        ChooseButton.pack()
+        ChooseButton.place(x = 200, y = 300)
+        
         self.attributes('-topmost', True)
 
 # Add Information Window
@@ -130,9 +197,9 @@ class InsertInformation(CTkToplevel):
         IncorrectInput.pack()
         IncorrectInput.place(x = 135, y = 250)  
               
-        testbutton = CTkButton(self, text = 'Add Data', font = ('Ariel', 30), width = 100, command = lambda: AddData())
-        testbutton.pack()
-        testbutton.place(x = 100, y = 300)
+        AddDataButton = CTkButton(self, text = 'Add Data', font = ('Ariel', 30), width = 100, command = lambda: AddData())
+        AddDataButton.pack()
+        AddDataButton.place(x = 100, y = 300)
         
         CloseButton = CTkButton(self, text = 'Cancel', font = ('Ariel', 30), width = 100, text_color = 'red', command = lambda: DestroyWidget(self))
         CloseButton.pack()  
@@ -191,18 +258,18 @@ class InsertInformation(CTkToplevel):
         
         # Function to get the input values and add them to the csv file
         def AddData():
-            data = [ShowName.get(), Type.get(), Genre.get(), Platform.get(), WatchedStatus.get()]
+            dataInput = [ShowName.get(), Type.get(), Genre.get(), Platform.get(), WatchedStatus.get()]
             
             # Check if the inputted data is valid
             valid = True
-            for value in data:
+            for value in dataInput:
                 if value == Default:
                     valid = False
                 if value == '':
                     valid = False
             if valid:
                 # Add the data to the csv file
-                add_data(Data2, data)
+                add_data(Data, dataInput)
                 
                 # Destroy the popup
                 DestroyWidget(self)
@@ -210,7 +277,7 @@ class InsertInformation(CTkToplevel):
                 IncorrectInput.configure(text = IncorrectInputText)
 
 # Setting Initial Datasets
-Data = pd.read_csv('Data.csv')
+Data = pd.read_csv('BaseData.csv')
 Data2 = pd.read_csv('BaseData.csv')
 
 # Create the first window
@@ -227,7 +294,7 @@ def open_window(name):
     # Call the class
     object(root)
 
-# Button to add data
+# Add Data Button
 AddDataButton = CTkButton(root, text = 'Add Data', font = ('Ariel', 30), corner_radius = 32, command = lambda: open_window('InsertInformation'))
 AddDataButton.pack()
 AddDataButton.place(x = 325, y = 150)
@@ -253,11 +320,15 @@ InvalidFileText = CTkLabel(master = root, text = '', font = ('Ariel', 18), text_
 InvalidFileText.pack()
 InvalidFileText.place(x = 235, y = 500)
 
+# Choose Show Button
+ChooseShowButton = CTkButton(master = root, text = 'Choose Show or Film', font = ('Ariel', 30), corner_radius = 90, command = lambda: open_window('ChooseShow'))
+ChooseShowButton.pack()
+ChooseShowButton.place(x = 250, y = 275)
 
-testbutton = CTkButton(master = root, text = 'test', command = lambda: open_window('ChooseShow'))
-testbutton.pack()
-testbutton.place(x = 100, y = 100)
-
+# Edit Data Button
+EditDataButton = CTkButton(master = root, text = 'Edit Data', font = ('Ariel', 30), corner_radius = 90, command = lambda: open_window('InsertInformation'))
+EditDataButton.pack()
+EditDataButton.place(x = 325, y = 200)
 
 # Function to destroy a given widget
 def DestroyWidget(widget):

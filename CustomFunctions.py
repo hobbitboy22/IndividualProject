@@ -45,11 +45,15 @@ def create_dataframe(df, type = None, genre = None, platform = None, watched = N
     
     return df
     
+# Function to get a random value from the created dataframe
 def get_value(df):
-    random_index = random.choice(df.index.tolist())
-    return df.loc[random_index]
+    try:
+        random_index = random.choice(df.index.tolist())
+        return df.loc[random_index]
+    except:
+        return 'No shows found with the given parameters'
 
-sui = create_dataframe(data2, genre = 'Action', watched = 'Partly')
-thing = get_value(sui)
-print(thing)
-print(thing['Name'])
+# Function to choose a random show from the given csv file with the given parameters
+def choose_random_show(df, Type = None, Genre = None, Platform = None, Watched = None):
+    new_df = create_dataframe(df, type = Type, genre = Genre, platform = Platform, watched = Watched)
+    return get_value(new_df)
