@@ -73,12 +73,12 @@ class ChooseShow(CTkToplevel):
         Type.pack()
         Type.place(x = 150, y = 70)
         
-        Genre = CTkOptionMenu(self, values = get_unique_values(Data2, 'Genre'), font = ('Ariel', 25))
+        Genre = CTkOptionMenu(self, values = get_unique_values(Data, 'Genre'), font = ('Ariel', 25))
         Genre.set(Default)
         Genre.pack()
         Genre.place(x = 150, y = 120)
         
-        Platform = CTkOptionMenu(self, values = get_unique_values(Data2, 'Platform'), font = ('Ariel', 25))
+        Platform = CTkOptionMenu(self, values = get_unique_values(Data, 'Platform'), font = ('Ariel', 25))
         Platform.set(Default)
         Platform.pack()
         Platform.place(x = 150, y = 170)
@@ -238,12 +238,12 @@ class InsertInformation(CTkToplevel):
         Type.pack()
         Type.place(x = 150, y = 60)
         
-        Genre = CTkOptionMenu(self, values = get_unique_values(Data2, 'Genre'))
+        Genre = CTkOptionMenu(self, values = get_unique_values(Data, 'Genre'))
         Genre.set(Default)
         Genre.pack()
         Genre.place(x = 150, y = 90)
         
-        Platform = CTkOptionMenu(self, values = get_unique_values(Data2, 'Platform'))
+        Platform = CTkOptionMenu(self, values = get_unique_values(Data, 'Platform'))
         Platform.set(Default)
         Platform.pack()
         Platform.place(x = 150, y = 120)
@@ -289,7 +289,10 @@ class EditDataPopup(CTkToplevel):
 
         # Set the size of the window
         # .format(position_x, position_y) sets the position at the root windows top left corner so that they overlap
-        self.wm_geometry("600x400+{}+{}".format(position_x, position_y))
+        self.wm_geometry("700x450+{}+{}".format(position_x, position_y))
+
+        # Declare Data as a global variable
+        global Data
 
         scrollbar = CTkScrollbar(self)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -321,18 +324,70 @@ class EditDataPopup(CTkToplevel):
 
             # Save the updated data to the csv file
             Data.iloc[selected_index] = selected_row
-            Data.to_csv('BaseData.csv', index=False)
+            Data.to_csv(Data_csv, index = False)
 
-        update_button = CTkButton(self, text='Update', command=update_data)
+        def delete_data():
+            selected_index = int(listbox.curselection()[0])
+            
+            if selected_index is not None:
+                Data.drop(Data.index[selected_index], inplace=True)
+                Data.to_csv(Data_csv, index = False)
+                listbox.delete(selected_index)
+
+        update_button = CTkButton(self, font = ('Ariel', 30), corner_radius = 90, text = 'Update', command = update_data)
         update_button.pack(side=tk.TOP)
+
+        delete_button = CTkButton(self, font = ('Ariel', 30), corner_radius = 90, text = 'Delete', command = delete_data)
+        delete_button.pack(side=tk.TOP)
+        
+        BackButton = CTkButton(self, text = 'Back', font = ('Ariel', 30), text_color = 'red', corner_radius = 90, command = lambda: DestroyWidget(self))
+        BackButton.pack()
+        BackButton.place(x=550, y=355)
 
         # Input Windows
         self.entries = []
-        for i in range(5):
-            entry = CTkEntry(self)
-            entry.pack()
-            entry.place(x=250, y=250 + i * 30)
-            self.entries.append(entry)
+        for i in range(4):
+            if i != 2:
+                entry = CTkEntry(self)
+                entry.pack()
+                entry.place(x=400, y=280 + i * 30)
+                self.entries.append(entry)
+
+        TypeOptions = ['Film', 'Series']
+        ShowTypeDropDown = CTkOptionMenu(self, values=TypeOptions)
+        ShowTypeDropDown.pack()
+        ShowTypeDropDown.place(x=400, y=280 + 2 * 30)
+        self.entries.append(ShowTypeDropDown)
+
+        WatchedOptions = ['Yes', 'No', 'Partly']
+        WatchedStatusDropDown = CTkOptionMenu(self, values=WatchedOptions)
+        WatchedStatusDropDown.pack()
+        WatchedStatusDropDown.place(x=400, y=280 + 4 * 30)
+        self.entries.append(WatchedStatusDropDown)
+        
+        # Input Labels
+        ShowNameText = CTkLabel(self, text = "Name:", font = ('Ariel', 25))
+        ShowNameText.pack()
+        ShowNameText.place(x = 175, y = 280)
+        
+        ShowTypeText = CTkLabel(self, text = "Type:", font = ('Ariel', 25))
+        ShowTypeText.pack()
+        ShowTypeText.place(x = 175, y = 310)
+        
+        ShowGenreText = CTkLabel(self, text = "Genre:", font = ('Ariel', 25))
+        ShowGenreText.pack()
+        ShowGenreText.place(x = 175, y = 340)
+        
+        ShowPlatformText = CTkLabel(self, text = "Platform:", font = ('Ariel', 25))
+        ShowPlatformText.pack()
+        ShowPlatformText.place(x = 175, y = 370)
+        
+        ShowWatchedText = CTkLabel(self, text = "Watched Status:", font = ('Ariel', 25))
+        ShowWatchedText.pack()
+        ShowWatchedText.place(x = 175, y = 400)
+        
+        
+        
 
         listbox.pack(side='left', fill='both')
         scrollbar.configure(command=listbox.yview)
@@ -343,7 +398,7 @@ class EditDataPopup(CTkToplevel):
 
 # Setting Initial Datasets
 Data = pd.read_csv('BaseData.csv')
-Data2 = pd.read_csv('BaseData.csv')
+Data_csv = 'BaseData.csv'
 
 # Create the first window
 root = CTk()
@@ -415,6 +470,7 @@ def GetCSVFile():
             if (NewCSV != ""):
                 # Set data as the new csv file
                 Data = pd.read_csv(NewCSV)
+                Data_csv = NewCSV
                 InvalidFileText.config(text = '')
             else:
                 print("No file was selected")
