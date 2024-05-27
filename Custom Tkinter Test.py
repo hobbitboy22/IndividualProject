@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import simpledialog
+from tkinter import Listbox
 from enum import Enum
 import csv
 import os
@@ -276,6 +277,70 @@ class InsertInformation(CTkToplevel):
             else:
                 IncorrectInput.configure(text = IncorrectInputText)
 
+# Test Popup Window
+class EditDataPopup(CTkToplevel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title("Edit Data")
+
+        # Get the top left corners x and y coordinates if the root window (master)
+        position_x = master.winfo_rootx()
+        position_y = master.winfo_rooty()
+
+        # Set the size of the window
+        # .format(position_x, position_y) sets the position at the root windows top left corner so that they overlap
+        self.wm_geometry("600x400+{}+{}".format(position_x, position_y))
+
+        scrollbar = CTkScrollbar(self)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        listbox = tk.Listbox(self, yscrollcommand=scrollbar.set, width=25, height=50)
+        listbox.pack(side=tk.LEFT, fill=tk.BOTH)
+
+        self.text = CTkLabel(self, width=25, height=50, font=('Ariel', 30), text='')
+        self.text.pack(side=tk.TOP, fill=tk.BOTH)
+
+        for index, row in Data.iterrows():
+            listbox.insert(tk.END, row['Name'])
+
+        def show_details(event):
+            selected_index = listbox.curselection()
+            selected_row = Data.iloc[selected_index]
+            self.text.configure(
+                text=f"Name: {selected_row['Name']}\nType: {selected_row['Type']}\nGenre: {selected_row['Genre']}\nPlatform: {selected_row['Platform']}\nWatched Status: {selected_row['Watched']}")
+
+        def update_data():
+            selected_index = listbox.curselection()
+            selected_row = Data.iloc[selected_index]
+            # Update the selected row with the new data
+            selected_row['Name'] = self.entries[0].get() or selected_row['Name']
+            selected_row['Type'] = self.entries[1].get() or selected_row['Type']
+            selected_row['Genre'] = self.entries[2].get() or selected_row['Genre']
+            selected_row['Platform'] = self.entries[3].get() or selected_row['Platform']
+            selected_row['Watched'] = self.entries[4].get() or selected_row['Watched']
+
+            # Save the updated data to the csv file
+            Data.iloc[selected_index] = selected_row
+            Data.to_csv('BaseData.csv', index=False)
+
+        update_button = CTkButton(self, text='Update', command=update_data)
+        update_button.pack(side=tk.TOP)
+
+        # Input Windows
+        self.entries = []
+        for i in range(5):
+            entry = CTkEntry(self)
+            entry.pack()
+            entry.place(x=250, y=250 + i * 30)
+            self.entries.append(entry)
+
+        listbox.pack(side='left', fill='both')
+        scrollbar.configure(command=listbox.yview)
+        listbox.bind('<<ListboxSelect>>', show_details)
+
+        # Moves the window to the top
+        self.attributes('-topmost', True)
+
 # Setting Initial Datasets
 Data = pd.read_csv('BaseData.csv')
 Data2 = pd.read_csv('BaseData.csv')
@@ -326,7 +391,7 @@ ChooseShowButton.pack()
 ChooseShowButton.place(x = 250, y = 275)
 
 # Edit Data Button
-EditDataButton = CTkButton(master = root, text = 'Edit Data', font = ('Ariel', 30), corner_radius = 90, command = lambda: open_window('InsertInformation'))
+EditDataButton = CTkButton(master = root, text = 'Edit Data', font = ('Ariel', 30), corner_radius = 90, command = lambda: open_window('EditDataPopup'))
 EditDataButton.pack()
 EditDataButton.place(x = 325, y = 200)
 
