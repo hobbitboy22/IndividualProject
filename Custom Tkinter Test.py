@@ -295,13 +295,13 @@ class EditDataPopup(CTkToplevel):
         global Data
 
         scrollbar = CTkScrollbar(self)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        scrollbar.pack(side = tk.RIGHT, fill = tk.Y)
 
-        listbox = tk.Listbox(self, yscrollcommand=scrollbar.set, width=25, height=50)
-        listbox.pack(side=tk.LEFT, fill=tk.BOTH)
+        listbox = tk.Listbox(self, yscrollcommand = scrollbar.set, width = 25, height = 50)
+        listbox.pack(side = tk.LEFT, fill = tk.BOTH)
 
-        self.text = CTkLabel(self, width=25, height=50, font=('Ariel', 30), text='')
-        self.text.pack(side=tk.TOP, fill=tk.BOTH)
+        self.text = CTkLabel(self, width = 25, height = 50, font=('Ariel', 30), text='')
+        self.text.pack(side = tk.TOP, fill = tk.BOTH)
 
         for index, row in Data.iterrows():
             listbox.insert(tk.END, row['Name'])
@@ -335,14 +335,14 @@ class EditDataPopup(CTkToplevel):
                 listbox.delete(selected_index)
 
         update_button = CTkButton(self, font = ('Ariel', 30), corner_radius = 90, text = 'Update', command = update_data)
-        update_button.pack(side=tk.TOP)
+        update_button.pack(side = tk.TOP)
 
         delete_button = CTkButton(self, font = ('Ariel', 30), corner_radius = 90, text = 'Delete', command = delete_data)
-        delete_button.pack(side=tk.TOP)
+        delete_button.pack(side = tk.TOP)
         
         BackButton = CTkButton(self, text = 'Back', font = ('Ariel', 30), text_color = 'red', corner_radius = 90, command = lambda: DestroyWidget(self))
         BackButton.pack()
-        BackButton.place(x=550, y=355)
+        BackButton.place(x = 550, y = 355)
 
         # Input Windows
         self.entries = []
@@ -350,19 +350,19 @@ class EditDataPopup(CTkToplevel):
             if i != 2:
                 entry = CTkEntry(self)
                 entry.pack()
-                entry.place(x=400, y=280 + i * 30)
+                entry.place(x = 400, y = 280 + i * 30)
                 self.entries.append(entry)
 
         TypeOptions = ['Film', 'Series']
         ShowTypeDropDown = CTkOptionMenu(self, values=TypeOptions)
         ShowTypeDropDown.pack()
-        ShowTypeDropDown.place(x=400, y=280 + 2 * 30)
+        ShowTypeDropDown.place(x = 400, y = 280 + 2 * 30)
         self.entries.append(ShowTypeDropDown)
 
         WatchedOptions = ['Yes', 'No', 'Partly']
         WatchedStatusDropDown = CTkOptionMenu(self, values=WatchedOptions)
         WatchedStatusDropDown.pack()
-        WatchedStatusDropDown.place(x=400, y=280 + 4 * 30)
+        WatchedStatusDropDown.place(x = 400, y = 280 + 4 * 30)
         self.entries.append(WatchedStatusDropDown)
         
         # Input Labels
@@ -386,11 +386,8 @@ class EditDataPopup(CTkToplevel):
         ShowWatchedText.pack()
         ShowWatchedText.place(x = 175, y = 400)
         
-        
-        
-
-        listbox.pack(side='left', fill='both')
-        scrollbar.configure(command=listbox.yview)
+        listbox.pack(side = 'left', fill = 'both')
+        scrollbar.configure(command = listbox.yview)
         listbox.bind('<<ListboxSelect>>', show_details)
 
         # Moves the window to the top
@@ -420,9 +417,9 @@ AddDataButton.pack()
 AddDataButton.place(x = 325, y = 150)
 
 # Created text and places it on the screen
-Text = CTkLabel(master = root, text = "This text should appear on the screen", font = ('Ariel', 30))
+Text = CTkLabel(master = root, text = "Move and Show Manager", font = ('Ariel', 50))
 Text.pack()
-Text.place(x = 50, y = 50)
+Text.place(x = 125, y = 50)
 
 # Quit Button
 QuitButton = CTkButton(master = root, text = "Quit", font = ('Ariel', 30), text_color = 'red', corner_radius = 32, command = lambda: DestroyWidget(root))
